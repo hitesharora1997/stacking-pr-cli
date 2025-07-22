@@ -1,0 +1,114 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "stacking-pr"
+version = "0.2.0"
+description = "A developer tool for managing clean commit history and modular PRs"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [
+    {name = "Hitesh Arora", email = "hitesh.arora1997@gmail.com"}
+]
+keywords = ["git", "github", "pull-request", "workflow", "developer-tools", "cli"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: OS Independent",
+    "Environment :: Console",
+    "Topic :: Software Development :: Version Control :: Git",
+]
+dependencies = [
+    "click>=8.0.0",
+    "PyYAML>=6.0",
+    "rich>=13.0.0",  # For better terminal output
+]
+
+[project.optional-dependencies]
+dev = [
+    "black==25.1.0",
+    "flake8==7.2.0",
+    "isort==6.0.1",
+    "mypy>=1.0.0",
+]
+test = [
+    "pytest==8.3.4",
+    "pytest-cov==6.0.0",
+    "pytest-mock>=3.10.0",
+]
+
+[project.scripts]
+stacking-pr = "stacking_pr.cli:cli"
+
+[project.urls]
+Homepage = "https://github.com/hitesharora1997/stacking-pr"
+Documentation = "https://github.com/hitesharora1997/stacking-pr#readme"
+Repository = "https://github.com/hitesharora1997/stacking-pr"
+Issues = "https://github.com/hitesharora1997/stacking-pr/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["stacking_pr*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+addopts = [
+    "-v",
+    "--tb=short",
+    "--cov=stacking_pr",
+    "--cov-report=term-missing",
+    "--cov-report=html:htmlcov",
+    "--cov-fail-under=80"
+]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning"
+]
+
+[tool.coverage.run]
+source = ["stacking_pr"]
+omit = [
+    "tests/*",
+    "venv/*",
+    "*/__pycache__/*",
+    "*/migrations/*"
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:"
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py39']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # Directories
+  migrations
+  | venv
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_first_party = ["app", "tests"]
