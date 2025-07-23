@@ -6,7 +6,7 @@ Thank you for your interest in contributing to stacking-pr! This document provid
 
 1. Fork and clone the repository:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/stacking-pr.git
+   git clone https://github.com/hitesharora1997/stacking-pr.git
    cd stacking-pr
    ```
 
