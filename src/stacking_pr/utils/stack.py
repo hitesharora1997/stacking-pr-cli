@@ -1,7 +1,6 @@
 """Stack management utilities."""
 
 from .config import load_config, save_config
-from .git import get_current_branch
 
 
 def get_stack_info():

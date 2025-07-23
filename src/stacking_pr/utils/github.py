@@ -3,7 +3,7 @@
 import json
 import subprocess
 
-from .git import get_commit_messages, get_repo_info
+from .git import get_commit_messages
 
 
 def run_gh_command(cmd, check=True):
@@ -35,7 +35,9 @@ def create_or_update_pr(branch_name, base_branch=None, draft=False):
     existing_pr = get_pr_info(branch_name)
     if existing_pr:
         # Update existing PR
-        return f"https://github.com/{existing_pr['repository']['nameWithOwner']}/pull/{existing_pr['number']}"
+        repo = existing_pr["repository"]["nameWithOwner"]
+        pr_num = existing_pr["number"]
+        return f"https://github.com/{repo}/pull/{pr_num}"
 
     # Create new PR
     cmd = ["pr", "create", "--head", branch_name]

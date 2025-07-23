@@ -1,6 +1,5 @@
 """Configuration management utilities."""
 
-import os
 from pathlib import Path
 
 import yaml
@@ -56,15 +55,6 @@ def create_config_file(path=None):
         path = get_config_path()
 
     config = DEFAULT_CONFIG.copy()
-
-    # Add .stacking-pr.yml to .gitignore if it doesn't exist
-    gitignore_path = Path(".gitignore")
-    if gitignore_path.exists():
-        with open(gitignore_path, "r") as f:
-            content = f.read()
-        if ".stacking-pr.yml" not in content:
-            with open(gitignore_path, "a") as f:
-                f.write("\n# Stacking PR configuration\n.stacking-pr.yml\n")
 
     with open(path, "w") as f:
         yaml.dump(config, f, default_flow_style=False, sort_keys=False)

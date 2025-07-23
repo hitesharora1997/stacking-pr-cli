@@ -2,7 +2,7 @@
 
 import click
 
-from ..utils.git import get_current_branch, merge_branch
+from ..utils.git import get_current_branch, merge_branch, run_git_command
 from ..utils.github import get_pr_info, merge_pr
 from ..utils.stack import get_stack_order, remove_from_stack
 
@@ -73,10 +73,24 @@ def merge(branch, cascade, delete_branches):
 
     # Clean up merged branches
     if delete_branches and merged_branches:
-        click.echo("\nCleaning up merged branches...")
-        for branch in merged_branches:
-            remove_from_stack(branch)
-            # TODO: Delete local and remote branches
-            click.echo(f"🗑️  Removed {branch} from stack")
+        if click.confirm(
+            f"\nDelete {len(merged_branches)} merged branch(es) locally and remotely?"
+        ):
+            click.echo("\nCleaning up merged branches...")
+            for branch in merged_branches:
+                remove_from_stack(branch)
+                # Delete local branch
+                if run_git_command(["branch", "-d", branch], check=False):
+                    click.echo(f"🗑️  Deleted local branch {branch}")
+                # Delete remote branch
+                if run_git_command(["push", "origin", "--delete", branch], check=False):
+                    click.echo(f"🗑️  Deleted remote branch {branch}")
+                else:
+                    click.echo(
+                        f"⚠️  Could not delete remote branch {branch} "
+                        "(may already be deleted)"
+                    )
+        else:
+            click.echo("Skipping branch deletion")
 
     click.echo(f"\n✅ Successfully merged {len(merged_branches)} branch(es)")

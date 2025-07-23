@@ -4,7 +4,7 @@ import click
 
 from ..utils.git import get_current_branch, push_branch
 from ..utils.github import create_or_update_pr
-from ..utils.stack import get_stack_order
+from ..utils.stack import get_stack_info, get_stack_order
 
 
 @click.command()
@@ -35,7 +35,9 @@ def push(all, create_prs, draft):
                 click.echo(f"✅ Pushed {branch}")
 
                 if create_prs:
-                    base = stack_order[i - 1] if i > 0 else "main"
+                    # Determine base branch from stack dependencies
+                    stack_info = get_stack_info()
+                    base = stack_info.get(branch, {}).get("base", "main")
                     pr_url = create_or_update_pr(branch, base, draft=draft)
                     if pr_url:
                         click.echo(f"📝 PR created/updated: {pr_url}")
@@ -57,8 +59,10 @@ def push(all, create_prs, draft):
             click.echo(f"✅ Pushed {current}")
 
             if create_prs:
-                # TODO: Determine proper base branch
-                pr_url = create_or_update_pr(current, draft=draft)
+                # Determine base branch from stack config
+                stack_info = get_stack_info()
+                base = stack_info.get(current, {}).get("base", "main")
+                pr_url = create_or_update_pr(current, base, draft=draft)
                 if pr_url:
                     click.echo(f"📝 PR created/updated: {pr_url}")
         else:

@@ -1,4 +1,8 @@
-z# stacking-pr
+# stacking-pr
+
+[![PyPI version](https://badge.fury.io/py/stacking-pr.svg)](https://badge.fury.io/py/stacking-pr)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A developer tool for managing clean commit history and modular PRs through a stacked workflow.
 
@@ -33,7 +37,7 @@ Your Git history remains clean and linear, just as if you managed it manually.
 
 ## Installation
 
-### From PyPI (coming soon)
+### From PyPI
 
 ```bash
 pip install stacking-pr
@@ -480,6 +484,18 @@ Options:
 - `--create-prs`: Create pull requests for branches without them
 - `--draft`: Create pull requests as drafts
 
+### `rebase`
+Rebase current branch or entire stack.
+
+```bash
+stacking-pr rebase [OPTIONS]
+```
+
+Options:
+- `--stack, -s`: Rebase entire stack (otherwise just current branch)
+- `--onto`: Branch to rebase onto (defaults to base branch from config)
+- `--interactive, -i`: Interactive rebase (requires manual interaction)
+
 ### `merge`
 Merge stacked branches in the correct order.
 
@@ -489,7 +505,7 @@ stacking-pr merge [OPTIONS]
 
 Options:
 - `--branch, -b`: Specific branch to merge (defaults to current branch)
-- `--cascade`: Merge all branches up to and including the specified branch
+- `--all`: Merge all branches in the stack
 - `--delete-branches`: Delete branches after successful merge
 
 ## Workflow Example

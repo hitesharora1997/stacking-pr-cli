@@ -10,8 +10,13 @@ def run_git_command(cmd, check=True):
         result = subprocess.run(
             ["git"] + cmd, capture_output=True, text=True, check=check
         )
+        if result.returncode != 0 and check:
+            return None
         return result.stdout.strip()
     except subprocess.CalledProcessError:
+        return None
+    except Exception:
+        # Catch any other unexpected errors
         return None
 
 

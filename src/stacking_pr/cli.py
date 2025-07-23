@@ -4,7 +4,7 @@ Main CLI interface for stacking-pr tool.
 
 import click
 
-from .commands import create, init, merge, push, status
+from .commands import create, init, merge, push, rebase, status
 from .version import get_version
 
 
@@ -28,6 +28,7 @@ cli.add_command(create.create)
 cli.add_command(status.status)
 cli.add_command(push.push)
 cli.add_command(merge.merge)
+cli.add_command(rebase.rebase)
 
 
 if __name__ == "__main__":
